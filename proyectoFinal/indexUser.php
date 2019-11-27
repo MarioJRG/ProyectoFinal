@@ -28,10 +28,10 @@ if(isset($_POST['salir'])){
   $fullname = $_SESSION['userFullname'];
   $id = $_SESSION['userId'];
   $email = $_SESSION['userEmail'];
-  $querySelectuserImg=sprintf("SELECT * FROM userimg  WHERE idUser = '%d'",
+  $querySelectuserImg=sprintf("SELECT * FROM userimg WHERE idUser = '%d'",
   mysqli_real_escape_string($connLocalhost,trim("$id"))
  );
- $resQuerySelecUserImg = mysqli_query($connLocalhost, $querySelectuserImg);
+ $resQuerySelecUserImg = mysqli_query($connLocalhost, $querySelectuserImg) or trigger_error("The query for user validation has failed");
 
   if(isset($_POST['enviar'])){
     if(isset($_FILES['img'])){
@@ -51,6 +51,28 @@ if(isset($_POST['salir'])){
 
     }
   }
+  
+ 
+    if(isset($_POST["buscar"])){
+        if ($_POST["nombrePeli"]=="") {
+            $error[]="searh no define";
+        }
+        $queryMovieSearch = sprintf("SELECT * FROM movieinfo WHERE name = '%s'",
+            mysqli_real_escape_string($connLocalhost, trim($_POST["nombrePeli"]))
+        );
+        // Ejecutamos el query
+        $resQueryMovieSearch = mysqli_query($connLocalhost, $queryMovieSearch) or trigger_error("The query for user validation has failed");
+        if (mysqli_num_rows($resQueryMovieSearch) == 0) {
+            $error[]="Titulo no encontrado";
+        }
+        if (!isset($error)) {
+            $_SESSION["nombre"]=$_POST["nombrePeli"];
+            header("Location: viewMovie.php?view=true");
+        }
+        
+        }
+  
+ 
 
   ?>
 <section  class="header header--bg">
@@ -63,12 +85,11 @@ if(isset($_POST['salir'])){
                         <div class="profile-img">
                         <?php
 
-                               $data=mysqli_fetch_array($resQuerySelecUserImg)
+                               $data=mysqli_fetch_assoc($resQuerySelecUserImg)
                                     ?>
-                                    <img src="data:image/jpg;base64,<?php echo base64_encode($data['ruta']);?>"width="350px" height="300px"/>
-                                    <?php
 
-                                ?>
+                                    <img src="data:image/jpg;base64,<?php echo base64_encode($data['ruta']);?>"width="350px" height="300px"/>
+                                    
 
                             <div class="file btn btn-lg btn-primary">
                                 Change Photo
@@ -158,7 +179,7 @@ if(isset($_POST['salir'])){
 
 
             ?>
-            <form action="" method="post">
+            <form action="indexUser.php" method="post">
                 <div class="letra_tamno">
                     <label class="cambiar_text" >Ingrese el nombre de la pelicula</label>
             <tr><input type="text"></tr>
@@ -174,16 +195,24 @@ if(isset($_POST['salir'])){
                }
             ?>
             <?php
+            
+            
                 if ($role == "admin") {
 
 
             ?>
-            <form action="" method="post">
+            <form action="indexUser.php" method="post">
                 <div class="">
                     <ul>
                     <h4><li><a href="userAdd.php" style="color:#000000;">Agregar nuevo Admin</a></li></h4>
                     <h4><li><a href="movieAdd.php" style="color:#000000;">Agregar Nueva pelicula</a></li></h4>
                     <h4><li><a href="#" style="color:#000000;">Ver reportes</a></li></h4>
+                    <div class="letra_tamno">
+                    <label class="cambiar_text" >Ingrese el nombre de la pelicula</label>
+            <tr><input type="text" name="nombrePeli"></tr>
+            
+            <tr><input type="submit" value="Buscar" name="buscar" ></tr>
+                    </div>
 
 
                     </ul>
@@ -199,16 +228,19 @@ if(isset($_POST['salir'])){
             </form>
             <?php
                }
+               if(isset($error)){
+                foreach ($error as $key => $value) {
+                     echo "<div class=\"error_msg\">$value</div>";
+             
+                }
+                 }
             ?>
         </div>
 
 </section>
 <?php
 include "include/footer.php";
-      print_r($_SESSION);
-      $role = $_SESSION['role'];
-      echo "<br>";
-      print_r($role)
+      
   ?>
 </body>
 </html>

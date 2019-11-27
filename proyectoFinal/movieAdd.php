@@ -13,35 +13,43 @@ if(isset($_POST['sent'])){
                 }
         }
         
-        if(isset($_POST['email']) && isset($_POST['email']) != "") {
-                $queryValidateEmail = sprintf("SELECT id FROM userinfo WHERE email = '%s'",
-                  mysqli_real_escape_string($connLocalhost, trim($_POST['email']))
+        if(isset($_POST['movieName']) && isset($_POST['movieName']) != "") {
+                $queryValidateEmail = sprintf("SELECT id FROM movieinfo WHERE name = '%s'",
+                  mysqli_real_escape_string($connLocalhost, trim($_POST['movieName']))
                 );
                 // Ejecutamos el Query y obtenemos un recordset debido a que el query es de tipo SELECT
                 $resQueryValidateEmail = mysqli_query($connLocalhost, $queryValidateEmail) or trigger_error("error_msg");
                 // Contamos cuantos registros fueron devueltos por la consulta anterior, si obtenemos un numero distinto de 0 quiere decir que el correo ya está siendo utilizado
                 if(mysqli_num_rows($resQueryValidateEmail) != 0) {
-                  $error[] = "The email is already in use...";
+                  $error[] = "The Movie Name is already in use...";
                 }
               }
+         if (isset($_POST['img'])) {
+           $error[]="imagen no selected";
+         }     
 
+              
 
         //Guardar datos en la BD
         if(!isset($error)) {
+          
+        
+        $imagen=addslashes(file_get_contents($_FILES['img']['tmp_name']));
                 // Definimos el query a ejecutar
-                $queryUserAdd = sprintf("INSERT INTO userinfo (name, lastname, email, password, role) VALUES ('%s', '%s', '%s', '%s', '%s')",
-                    mysqli_real_escape_string($connLocalhost,trim($_POST['name'])),
-                    mysqli_real_escape_string($connLocalhost,trim($_POST['lastname'])),
-                    mysqli_real_escape_string($connLocalhost,trim($_POST['email'])),
-                    mysqli_real_escape_string($connLocalhost,trim($_POST['password'])),
+                $queryUserAdd = sprintf("INSERT INTO movieinfo (name, actors, description, category,classification, imgenRuta) VALUES ('%s', '%s', '%s', '%s', '%s', '%s')",
+                    mysqli_real_escape_string($connLocalhost,trim($_POST['movieName'])),
+                    mysqli_real_escape_string($connLocalhost,trim($_POST['actor'])),
+                    mysqli_real_escape_string($connLocalhost,trim($_POST['descripcion'])),
+                    mysqli_real_escape_string($connLocalhost,trim($_POST['categoria'])),
 
-                    mysqli_real_escape_string($connLocalhost,trim($_POST['role']))
+                    mysqli_real_escape_string($connLocalhost,trim($_POST['clasificacion'])),
+                    $imagen
                 );
                 // Ejecutamos el query y cachamos el resultado
                 $resQueryUserAdd = mysqli_query($connLocalhost, $queryUserAdd) or trigger_error("The user insert query failed...");
                 // Redireccionamos al usuario si todo salio bien
                 if($resQueryUserAdd) {
-                  header("Location: login.php?userAdd=true");
+                  header("Location: indexUser.php?userAdd=true");
                 }
               }
 
@@ -69,16 +77,16 @@ if(isset($_POST['sent'])){
         <h2 class="page-section__title">Movie Add</h2>
 
 
-          <form action="movieAdd.php" method="post">
+          <form action="movieAdd.php" method="post" enctype="multipart/form-data">
     	    <table class="aliniamiento">
   		        <tr>
-  			<td><label for="name" class="page-section__title2" >Nombre de la pelicula:</label></td>
-  			<td><input type="text" name="name" value="<?php if(isset($_POST['name'])) echo $_POST['name']; ?>" /></td>
+  			<td><label for="movieName" class="page-section__title2" >Nombre de la pelicula:</label></td>
+  			<td><input type="text" name="movieName" value="<?php if(isset($_POST['name'])) echo $_POST['name']; ?>" /></td>
   		        </tr>
               <br>
   		        <tr>
   			<td><label for="actor"  class="page-section__title2">Actores:*</label></td>
-  			<td><input type="text" name="lastname" value="<?php if(isset($_POST['actor'])) echo $_POST['actor']; ?>" /></td>
+  			<td><input type="text" name="actor" value="<?php if(isset($_POST['actor'])) echo $_POST['actor']; ?>" /></td>
   		        </tr>
                           <br>
   		        
@@ -91,12 +99,12 @@ if(isset($_POST['sent'])){
                  <td>
           <select name="categoria">
             <option value="terror" selected="selected">Terror</option>
-            <option value="usuario">Comedia</option>
-            <option value="usuario">Aventura</option>
-            <option value="usuario">Romance</option>
-            <option value="usuario">Guerra</option>
-            <option value="usuario">Ciencia Ficcion</option>
-            <option value="usuario">Musicales</option>
+            <option value="comedia">Comedia</option>
+            <option value="aventura">Aventura</option>
+            <option value="romance">Romance</option>
+            <option value="guerra">Guerra</option>
+            <option value="cienciaFiccion">Ciencia Ficcion</option>
+            <option value="musicales">Musicales</option>
 
             
           </select>
@@ -117,7 +125,10 @@ if(isset($_POST['sent'])){
           </select>
                 </td>
                 </tr>
-  		        <tr>
+                <tr><td><label for="img" class="page-section__title2">Seleccione Imagen</label> 
+                <input type="file" name="img"/></td>
+                </tr>
+                <tr>
   			<td><input type="submit" class="bottom_save" value="Save Movie" name="sent" /></td>
   			<td>&nbsp;</td>
   		        </tr>

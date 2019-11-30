@@ -21,6 +21,7 @@ $movieClassification=$movieData['classification'];
 $movieDescription=$movieData['description'];
 $movieRuta=$movieData['imgenRuta'];
 $fullname = $_SESSION['userFullname'];
+$id = $_SESSION['userId'];
 if (isset($_POST['back'])) {
   header('Location: indexUser.php?login=true');
 }
@@ -153,6 +154,8 @@ if (isset($_POST['back'])) {
 
                     <div class="col-md-7">
                     <tr>
+                    <input style="visibility: hidden" id="id" value="<?php echo $id?>"> 
+                    <br>
   			<td><label for="comentario"  class="letra">Comentario:*</label></td>
              <td><input type="text" id="name" disabled value="<?php echo $fullname?> "/></td> 
   			<td><textarea  id="description" name="comentario" /></textarea></td>

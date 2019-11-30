@@ -28,9 +28,11 @@ if(isset($_POST['salir'])){
   $fullname = $_SESSION['userFullname'];
   $id = $_SESSION['userId'];
   $email = $_SESSION['userEmail'];
-  $querySelectuserImg=sprintf("SELECT * FROM userimg WHERE idUser = '%d'",
+  $querySelectuserImg=sprintf("SELECT * FROM userimg  WHERE idUser = '%d' ORDER by id desc LIMIT 1",
   mysqli_real_escape_string($connLocalhost,trim("$id"))
+  
  );
+
  $resQuerySelecUserImg = mysqli_query($connLocalhost, $querySelectuserImg) or trigger_error("The query for user validation has failed");
 
   if(isset($_POST['enviar'])){
@@ -184,6 +186,7 @@ if(isset($_POST['salir'])){
                     <label class="cambiar_text" >Ingrese el nombre de la pelicula</label>
             <tr><input type="text"></tr>
             <tr><input type="submit" value="Buscar" name="buscar" ></tr>
+            <h4><li><a href="userEdit.php" style="color:#000000;">Editar tu perfil</a></li></h4>
                     </div>
 
             <br>
@@ -206,6 +209,7 @@ if(isset($_POST['salir'])){
                     <ul>
                     <h4><li><a href="userAdd.php" style="color:#000000;">Agregar nuevo Admin</a></li></h4>
                     <h4><li><a href="movieAdd.php" style="color:#000000;">Agregar Nueva pelicula</a></li></h4>
+                    <h4><li><a href="userEdit.php" style="color:#000000;">Editar tu perfil</a></li></h4>
                     <h4><li><a href="#" style="color:#000000;">Ver reportes</a></li></h4>
                     <div class="letra_tamno">
                     <label class="cambiar_text" >Ingrese el nombre de la pelicula</label>

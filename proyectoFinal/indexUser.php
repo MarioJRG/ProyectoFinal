@@ -208,6 +208,7 @@ if(isset($_POST['salir'])){
                 <div class="">
                     <ul>
                     <h4><li><a href="userAdd.php" style="color:#000000;">Agregar nuevo Admin</a></li></h4>
+                    <h4><li><a href="editMovie.php" style="color:#000000;">Editar Pelicula</a></li></h4>
                     <h4><li><a href="movieAdd.php" style="color:#000000;">Agregar Nueva pelicula</a></li></h4>
                     <h4><li><a href="userEdit.php" style="color:#000000;">Editar tu perfil</a></li></h4>
                     <h4><li><a href="#" style="color:#000000;">Ver reportes</a></li></h4>

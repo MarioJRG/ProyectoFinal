@@ -4,20 +4,16 @@ if(!isset($_SESSION)) {
   session_start();
   if($_SESSION['role'] != "admin") header('Location: login.php?authError=true');
 }
-if(isset($_GET['movie'])){
-  $error[]='La pelicula no se guardo busquela de nuevo';
-}
-if (!isset($error)) {
-    if(isset($_POST['bmovie'])){
-        $QueryMovieSearch= sprintf("SELECT * FROM movieinfo WHERE name = '%s'",
-        mysqli_real_escape_string($connLocalhost,trim($_POST['nbMovie']))
+
+    
+        $QueryMovieSearch= sprintf("SELECT * FROM movieinfo WHERE id = '%s'",
+        mysqli_real_escape_string($connLocalhost,trim($_GET['movieId']))
     );
     $resQueryMovieSearch=mysqli_query($connLocalhost,$QueryMovieSearch) or trigger_error("The query failed..");
     $searchMovie = mysqli_fetch_assoc($resQueryMovieSearch);
     $mocie = $searchMovie['id'];
-    }
     
-}
+    
 if (isset($_POST['back'])) {
     header('Location: indexUser.php?login=true');
   }
@@ -37,7 +33,9 @@ if(isset($_POST['sent'])){
 
               
         
-     
+        if (isset($error)) {
+            header("Location: editMovie.php?movie=no_guardada");
+        }
      
         //Guardar datos en la BD
         if(!isset($error)) {
@@ -45,8 +43,8 @@ if(isset($_POST['sent'])){
         
         $imagen=addslashes(file_get_contents($_FILES['img']['tmp_name']));
                 // Definimos el query a ejecutar
-                $queryUserAdd = sprintf("UPDATE movieinfo SET name ='%s', actors ='%s', description ='%s', category ='%s',classification ='%s', imgenRuta='%s' WHERE id = ".$_POST['id'],
-                    mysqli_real_escape_string($connLocalhost,trim($_POST['movieName'])),
+                $queryUserAdd = sprintf("UPDATE movieinfo SET  actors ='%s', description ='%s', category ='%s',classification ='%s', imgenRuta='%s' WHERE id = ".$_POST['id'],
+                    
                     mysqli_real_escape_string($connLocalhost,trim($_POST['actor'])),
                     mysqli_real_escape_string($connLocalhost,trim($_POST['descripcion'])),
                     mysqli_real_escape_string($connLocalhost,trim($_POST['categoria'])),
@@ -58,7 +56,7 @@ if(isset($_POST['sent'])){
                 $resQueryUserAdd = mysqli_query($connLocalhost, $queryUserAdd) or trigger_error("The user insert query failed...");
                 // Redireccionamos al usuario si todo salio bien
                 if($resQueryUserAdd) {
-                  header("Location: indexUser.php?userAdd=true");
+                  header("Location: indexUser.php?movieEdit=true");
                 }
               }
               
@@ -87,26 +85,9 @@ if(isset($_POST['sent'])){
 
         <h2 class="page-section__title">Edit Movie</h2>
 
-            <form action="editMovie.php" method="post" >
-            <table class="aliniamiento">
-            <tr>
-            <br>
-            <td><label for="#" class="page-section__title2">Busque el nombre de la pelicula</label></td>
-            <td><input type="text" name="nbMovie" ></td>
-            <td><input type="submit" class="bottom_save" name="bmovie" value="Buscar"></td>
-            <tr><td><input type="submit" name="back" value="BACK"></td></tr>
-            </tr>
-            </table>
-            </form>
-            <?php
-            if (isset($resQueryMovieSearch)) {
-                
             
-            if (mysqli_num_rows($resQueryMovieSearch) != 0) {
-                
-            
-            ?>
-          <form action="editMovie.php" method="post" enctype="multipart/form-data">
+          
+          <form action="ListMovieEdit.php" method="post" enctype="multipart/form-data">
     	    <table class="aliniamiento">
             <tr>
             <td><input style="visibility: hidden" name="id" value="<?php echo $searchMovie['id']?>"></td>
@@ -172,8 +153,8 @@ if(isset($_POST['sent'])){
      </form>
      
      <?php
-            }
-        }
+            
+        
     if(isset($error)){
    foreach ($error as $key => $value) {
         echo "<div class=\"error_msg\">$value</div>";

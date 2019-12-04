@@ -17,10 +17,7 @@ if(isset($_POST['salir'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="include/css/styles.css">
-  <link rel="stylesheet" href="include/css/styles2.css">
-    <link rel="stylesheet" href="include/assets/fonts/flat-icon/flaticon.css">
-  <link rel="stylesheet" href="include/assets/bootstrap/css/bootstrap.min.css">
+    
 
 <body>
   <?php
@@ -85,6 +82,8 @@ if(isset($_POST['salir'])){
 
                     <div class="col-md-4">
                         <div class="profile-img">
+                        <br>
+                    
                         <?php
 
                                $data=mysqli_fetch_assoc($resQuerySelecUserImg)
@@ -211,6 +210,7 @@ if(isset($_POST['salir'])){
                     <h4><li><a href="editMovie.php" style="color:#000000;">Editar Pelicula</a></li></h4>
                     <h4><li><a href="movieAdd.php" style="color:#000000;">Agregar Nueva pelicula</a></li></h4>
                     <h4><li><a href="userEdit.php" style="color:#000000;">Editar tu perfil</a></li></h4>
+                    <h4><li><a href="ListMovie.php" style="color:#000000;">Listar Peliculas</a></li></h4>
                     <h4><li><a href="#" style="color:#000000;">Ver reportes</a></li></h4>
                     <div class="letra_tamno">
                     <label class="cambiar_text" >Ingrese el nombre de la pelicula</label>

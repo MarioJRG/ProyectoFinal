@@ -8,8 +8,38 @@
   margin-right: auto;
   margin-left: auto;
 }
+.lista_Movie{
+  margin-right: auto;
+  margin-left: auto;
+  color: #000000;
+
+  font-size: 20px;
+
+  background-color: #d8bdbd;
+}
 .letra{
   font-size: 30px;
+}
+.nombreUsuario {
+	font-size: 26px;
+	font-weight: bold;
+	color: #036;
+}
+
+.listadoUsuarios p {
+	margin: 20;
+}
+
+.accionesUsuario {
+	font-size: 22px;	
+}
+
+.listadoUsuarios li {
+	padding: 15px;
+}
+
+.listadoUsuarios li:nth-child(odd) {
+	background: #D1F7F4;
 }
 .cambiar_text{
   color: #000000;

@@ -1,4 +1,7 @@
-
+<link rel="stylesheet" href="include/css/styles.css">
+  <link rel="stylesheet" href="include/css/styles2.css">
+    <link rel="stylesheet" href="include/assets/fonts/flat-icon/flaticon.css">
+  <link rel="stylesheet" href="include/assets/bootstrap/css/bootstrap.min.css">
   
 <footer class="footer footer--bg">
     <div class="container text-center">

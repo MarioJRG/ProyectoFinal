@@ -50,10 +50,7 @@ if(!isset($_SESSION)) {
 <meta charset="UTF-8">
   
   <title>Project</title>
-  <link rel="stylesheet" href="include/assets/fonts/flat-icon/flaticon.css">
-  <link rel="stylesheet" href="include/assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="include/css/styles.css">
-  <link rel="stylesheet" href="include/css/styles2.css">
+  
 
   
 </head>
